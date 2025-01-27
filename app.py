@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 import requests
 import os
 
+
 app = Flask(__name__)
 
 # SerpAPI base URL and API key
