@@ -122,6 +122,5 @@ A **fully responsive frontend** is created using JavaScript, CSS, and HTML. This
 
 ## **Project Links**
 📌 **LinkedIn:** [www.linkedin.com/in/daniel-osarobo](www.linkedin.com/in/daniel-osarobo)
-📌 **Read on Medium:** [https://medium.com/@danielosarobo/when-docker-meets-aws-building-a-scalable-nfl-schedule-api-2966c2ce3895] (https://medium.com/@danielosarobo/when-docker-meets-aws-building-a-scalable-nfl-schedule-api-2966c2ce3895)
-
+📌 **Read more about this project on Medium:** [When Docker Meets AWS: Building a Scalable NFL Schedule API](https://medium.com/@danielosarobo/when-docker-meets-aws-building-a-scalable-nfl-schedule-api-2966c2ce3895)
 🔹 **Follow my journey as I complete the #30DaysDevOpsChallenge!** 🚀
