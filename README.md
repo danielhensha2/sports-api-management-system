@@ -89,13 +89,12 @@ curl https://<api-gateway-id>.execute-api.us-east-1.amazonaws.com/prod/sports
 ### **Step 8: Building a Frontend UI**
 A **fully responsive frontend** is created using JavaScript, CSS, and HTML. This UI fetches and displays NFL schedules in a visually appealing format.
 
-**Desktop View**
+## **Desktop View**
 ![alt text](Desktopview.png)
 
 ---
 
-
-**Mobile View**
+##  **Mobile View**
 ![alt text](mobileview.png)
 
 
@@ -122,5 +121,11 @@ A **fully responsive frontend** is created using JavaScript, CSS, and HTML. This
 
 ## **Project Links**
 📌 **LinkedIn:** [www.linkedin.com/in/daniel-osarobo](www.linkedin.com/in/daniel-osarobo)
+
+---
+
 📌 **Read more about this project on Medium:** [When Docker Meets AWS: Building a Scalable NFL Schedule API](https://medium.com/@danielosarobo/when-docker-meets-aws-building-a-scalable-nfl-schedule-api-2966c2ce3895)
+
+---
+
 🔹 **Follow my journey as I complete the #30DaysDevOpsChallenge!** 🚀
