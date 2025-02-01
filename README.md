@@ -92,8 +92,13 @@ A **fully responsive frontend** is created using JavaScript, CSS, and HTML. This
 **Desktop View**
 ![alt text](Desktopview.png)
 
+---
+
+
 **Mobile View**
 ![alt text](mobileview.png)
+
+
 ---
 
 ## **Key Challenges & Solutions**
@@ -117,6 +122,6 @@ A **fully responsive frontend** is created using JavaScript, CSS, and HTML. This
 
 ## **Project Links**
 📌 **LinkedIn:** [www.linkedin.com/in/daniel-osarobo](www.linkedin.com/in/daniel-osarobo)
-📌 **GitHub Repo:** [GitHub Link](https://github.com/danielhensha2/sports-api-management-system.git)
+📌 **Read on Medium:** [https://medium.com/@danielosarobo/when-docker-meets-aws-building-a-scalable-nfl-schedule-api-2966c2ce3895] (https://medium.com/@danielosarobo/when-docker-meets-aws-building-a-scalable-nfl-schedule-api-2966c2ce3895)
 
 🔹 **Follow my journey as I complete the #30DaysDevOpsChallenge!** 🚀
