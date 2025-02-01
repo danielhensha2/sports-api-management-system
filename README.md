@@ -1,145 +1,122 @@
-# Sports API Management System
+# Building a Scalable NFL Schedule API With AWS and Docker
 
-## **Project Overview**
-This project demonstrates building a containerized API management system for querying sports data. It leverages **Amazon ECS (Fargate)** for running containers, **Amazon API Gateway** for exposing REST endpoints, and an external **Sports API** for real-time sports data. The project showcases advanced cloud computing practices, including API management, container orchestration, and secure AWS integrations.
+## **Overview**
+This project is part of my #30DaysDevOpsChallenge and is my most technically challenging project to date. The goal was to create a **containerized NFL Schedule API Management System** that fetches, processes, and displays real-time NFL schedules efficiently.
 
----
+This system utilizes **AWS ECS (Fargate), API Gateway, Docker, and JavaScript frontend** to provide a **fully scalable, automated, and visually appealing** solution.
+
+This project showcases advanced cloud computing practices, including:
+
+**API Management**
+**Container Orchestration**
+**Secure AWS Integrations**
 
 ## **Features**
-- Exposes a REST API for querying real-time sports data
-- Runs a containerized backend using Amazon ECS with Fargate
-- Scalable and serverless architecture
-- API management and routing using Amazon API Gateway
- 
+✅ **Fetch real-time NFL schedules** from an external sports API.
+✅ **Serve schedules efficiently** through a containerized backend using AWS ECS.
+✅ **Visually appealing and responsive frontend** with JavaScript, CSS, and HTML.
+✅ **Scalable & Secure API management** using AWS API Gateway.
+✅ **Fully automated deployment** with Docker containerization.
+
 ---
 
+## **Architecture & Technologies Used**
+- **AWS ECS (Fargate)** → Manages containerized applications.
+- **AWS API Gateway** → Secure API access and routing.
+- **Docker** → Ensures portability and consistency.
+- **Python (Flask)** → Backend API logic.
+- **JavaScript, HTML, CSS** → Frontend UI for displaying schedules.
+
+---
 ## **Prerequisites**
-- **Sports API Key**: Sign up for a free account and subscription & obtain your API Key at serpapi.com
-- **AWS Account**: Create an AWS Account & have basic understanding of ECS, API Gateway, Docker & Python
-- **AWS CLI Installed and Configured**: Install & configure AWS CLI to programatically interact with AWS
-- **Serpapi Library**: Install Serpapi library in local environment "pip install google-search-results"
-- **Docker CLI and Desktop Installed**: To build & push container images
+**Sports API Key**: Obtain an API key from a provider like Serpapi or a similar service
+**AWS Account**: Create an AWS Account and have a basic understanding of ECS, API Gateway, Docker, and Python.
+**AWS CLI Installed and Configured**: Install and configure the AWS CLI to interact with AWS programmatically.
+**Python Library (Sport Specific)**: Install the appropriate Python library for your chosen sports data provider (e.g., google-search-results for SerpApi).
+**Docker CLI and Desktop Installed**: Required for building and pushing container images.
+
 
 ---
 
-## **Technical Architecture**
-![Brown Minimalist Lifestyle Daily Vlog YouTube Thumbnail (2)](https://github.com/user-attachments/assets/32e49fe6-df16-40cb-b262-af1478cf01d5)
 
----
+## **How It Works**
 
-## **Technologies**
-- **Cloud Provider**: AWS
-- **Core Services**: Amazon ECS (Fargate), API Gateway, CloudWatch
-- **Programming Language**: Python 3.x
-- **Containerization**: Docker
-- **IAM Security**: Custom least privilege policies for ECS task execution and API Gateway
-
----
-
-## **Project Structure**
+### **Step 1: Clone the Repository**
 
 ```bash
-sports-api-management/
-├── app.py # Flask application for querying sports data
-├── Dockerfile # Dockerfile to containerize the Flask app
-├── requirements.txt # Python dependencies
-├── .gitignore
-└── README.md # Project documentation
+git clone https://github.com/danielhensha2/sports-api-management-system.git
+
+cd sports-api-management
 ```
 
----
-
-## **Setup Instructions**
-
-### **Clone the Repository**
+## **Step 2:Create an ECR Repository**
 ```bash
-git clone https://github.com/ifeanyiro9/containerized-sports-api.git
-cd containerized-sports-api
+aws ecr create-repository --repository-name sports-api --region <your-region>
 ```
-### **Create ECR Repo**
+
+### **Step 3: Dockerizing the Backend**
+The backend is a Flask API that retrieves and serves NFL schedules. The application is containerized using **Docker**, ensuring consistency across different environments.
 ```bash
-aws ecr create-repository --repository-name sports-api --region us-east-1
+# Build the Docker image
+docker build -t sports-api .
 ```
 
-### **Authenticate Build and Push the Docker Image**
+### **Step 4: Deploying to AWS ECS (Fargate)**
+Amazon ECS (Fargate) is used to deploy and manage the containers efficiently.
 ```bash
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com
-
-docker build --platform linux/amd64 -t sports-api .
-docker tag sports-api:latest <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/sports-api:sports-api-latest
-docker push <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/sports-api:sports-api-latest
+# Push to AWS ECR
+docker tag sports-api:latest <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/sports-api:latest
+docker push <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/sports-api:latest
 ```
 
-### **Set Up ECS Cluster with Fargate**
-1. Create an ECS Cluster:
-- Go to the ECS Console → Clusters → Create Cluster
-- Name your Cluster (sports-api-cluster)
-- For Infrastructure, select Fargate, then create Cluster
+### **Step 5: Creating the ECS Cluster and Service**
+An ECS cluster is created to run the containerized application with **2 running tasks** for high availability.
 
-2. Create a Task Definition:
-- Go to Task Definitions → Create New Task Definition
-- Name your task definition (sports-api-task)
-- For Infrastructure, select Fargate
-- Add the container:
-  - Name your container (sports-api-container)
-  - Image URI: <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/sports-api:sports-api-latest
-  - Container Port: 8080
-  - Protocol: TCP
-  - Port Name: Leave Blank
-  - App Protocol: HTTP
-- Define Environment Eariables:
-  - Key: SPORTS_API_KEY
-  - Value: <YOUR_SPORTSDATA.IO_API_KEY>
-  - Create task definition
-3. Run the Service with an ALB
-- Go to Clusters → Select Cluster → Service → Create.
-- Capacity provider: Fargate
-- Select Deployment configuration family (sports-api-task)
-- Name your service (sports-api-service)
-- Desired tasks: 2
-- Networking: Create new security group
-- Networking Configuration:
-  - Type: All TCP
-  - Source: Anywhere
-- Load Balancing: Select Application Load Balancer (ALB).
-- ALB Configuration:
- - Create a new ALB:
- - Name: sports-api-alb
- - Target Group health check path: "/sports"
- - Create service
-4. Test the ALB:
-- After deploying the ECS service, note the DNS name of the ALB (e.g., sports-api-alb-<AWS_ACCOUNT_ID>.us-east-1.elb.amazonaws.com)
-- Confirm the API is accessible by visiting the ALB DNS name in your browser and adding /sports at end (e.g, http://sports-api-alb-<AWS_ACCOUNT_ID>.us-east-1.elb.amazonaws.com/sports)
+### **Step 6: Setting Up API Gateway**
+AWS API Gateway is configured to expose the backend API securely.
+- **GET** method created for API access.
+- **CORS configured** to allow frontend interaction.
 
-### **Configure API Gateway**
-1. Create a New REST API:
-- Go to API Gateway Console → Create API → REST API
-- Name the API (e.g., Sports API Gateway)
-
-2. Set Up Integration:
-- Create a resource /sports
-- Create a GET method
-- Choose HTTP Proxy as the integration type
-- Enter the DNS name of the ALB that includes "/sports" (e.g. http://sports-api-alb-<AWS_ACCOUNT_ID>.us-east-1.elb.amazonaws.com/sports
-
-3. Deploy the API:
-- Deploy the API to a stage (e.g., prod)
-- Note the endpoint URL
-
-### **Test the System**
-- Use curl or a browser to test:
+### **Step 7: Fetching Real-Time JSON Data**
+Users can access real-time NFL schedules by querying the API Gateway URL.
 ```bash
 curl https://<api-gateway-id>.execute-api.us-east-1.amazonaws.com/prod/sports
 ```
 
-### **What We Learned**
-Setting up a scalable, containerized application with ECS
-Creating public APIs using API Gateway.
-
-### **Future Enhancements**
-Add caching for frequent API requests using Amazon ElastiCache
-Add DynamoDB to store user-specific queries and preferences
-Secure the API Gateway using an API key or IAM-based authentication
-Implement CI/CD for automating container deployments
+![alt text](<invoke url.png>)
 
 
+### **Step 8: Building a Frontend UI**
+A **fully responsive frontend** is created using JavaScript, CSS, and HTML. This UI fetches and displays NFL schedules in a visually appealing format.
+
+**Desktop View**
+![alt text](Desktopview.png)
+
+**Mobile View**
+![alt text](mobileview.png)
+---
+
+## **Key Challenges & Solutions**
+### **1. Docker Credential Config Issue**
+✅ Fixed by updating **credsStore** to **credstore** in `config.json`.
+
+### **2. API Gateway CORS Issues**
+✅ Resolved by setting proper **Access-Control-Allow-Origin** headers.
+
+### **3. Debugging Proxy Requests**
+✅ Implemented a proxy to forward API requests, ensuring smooth frontend-backend communication.
+
+---
+
+## **Future Enhancements**
+🚀 **Caching with Amazon ElastiCache** → Faster API response times.
+🚀 **Database Integration (DynamoDB)** → Store user preferences and schedule history.
+🚀 **CI/CD Automation** → Enable continuous deployment and updates.
+
+---
+
+## **Project Links**
+📌 **LinkedIn:** [www.linkedin.com/in/daniel-osarobo](www.linkedin.com/in/daniel-osarobo)
+📌 **GitHub Repo:** [GitHub Link](https://github.com/danielhensha2/sports-api-management-system.git)
+
+🔹 **Follow my journey as I complete the #30DaysDevOpsChallenge!** 🚀

@@ -6,9 +6,9 @@ async function fetchAndRenderGames() {
 
   try {
     // Fetch the schedule data from the API
-    const response = await fetch("https://bctwqnqmub.execute-api.us-east-1.amazonaws.com/Dev/sports");
-
-    /*("https://bctwqnqmub.execute-api.us-east-1.amazonaws.com/Dev/sports");*/
+    const response = await fetch("https://********.execute-api.us-east-1.amazonaws.com/Dev/sports");
+  // Add you API Gateway URL above in the fetch function
+    
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
